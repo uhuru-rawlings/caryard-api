@@ -95,3 +95,14 @@ class Messages(models.Model):
 
     def __str__(self):
         return self.user.useremail
+    
+class Replies(models.Model):
+    user = models.ForeignKey(Messages, on_delete=models.CASCADE)
+    message = models.TextField(max_length = 1000)
+    date_sent = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'Messages'
+
+    def __str__(self):
+        return self.user.useremail
