@@ -14,7 +14,13 @@ class Registration(models.Model):
 
     def __str__(self):
         return self.useremail
-        
+
 class Lastlogin(models.Model):
     user = models.ForeignKey(Registration, CASCADE=models.CASCADE)
     last_login = models.DateTimeField()
+
+    class Meta:
+        db_table='Lastlogin'
+
+    def __str__(self):
+        return self.user.username
