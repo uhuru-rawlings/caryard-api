@@ -7,7 +7,7 @@ class Registration(models.Model):
     username = models.CharField(max_length=100)
     password = models.CharField(max_length=300)
     date_added = models.DateTimeField(auto_now=True)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     
     class Meta:
         db_table = 'Registration'
