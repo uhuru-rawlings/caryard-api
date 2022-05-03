@@ -37,3 +37,11 @@ class Profiles(models.Model):
 
     def __str__(self):
         return self.contact
+class Companies(models.Model):
+    companyname = models.CharField(max_length=100, unique=True)
+    date_added = models.DateTimeField(auto_now=True)
+    
+
+class CarModels(models.Model):
+    modelname = models.CharField(max_length=100)
+    company = models.ForeignKey()
