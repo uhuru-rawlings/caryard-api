@@ -40,8 +40,14 @@ class Profiles(models.Model):
 class Companies(models.Model):
     companyname = models.CharField(max_length=100, unique=True)
     date_added = models.DateTimeField(auto_now=True)
-    
+
+    class Meta:
+        db_table = 'Companies'
+
+    def __str__(self):
+        return self.companyname
 
 class CarModels(models.Model):
     modelname = models.CharField(max_length=100)
-    company = models.ForeignKey()
+    company = models.ForeignKey(Companies, on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now=True)
