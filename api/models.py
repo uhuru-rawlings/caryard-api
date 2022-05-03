@@ -70,8 +70,6 @@ class Cars(models.Model):
 
     def __str__(self):
         return self.carmodel
-
-
 class CarImages(models.Model):
     cardetails = models.ForeignKey(Cars, on_delete=models.CASCADE)
     interior = models.ImageField(upload_to='cars/')
@@ -83,8 +81,6 @@ class CarImages(models.Model):
 
     def __str__(self):
         return self.interior
-
-
 class Messages(models.Model):
     user = models.ForeignKey(Registration, on_delete=models.CASCADE)
     message = models.TextField(max_length = 1000)
@@ -94,8 +90,7 @@ class Messages(models.Model):
         db_table = 'Messages'
 
     def __str__(self):
-        return self.user.useremail
-    
+        return self.user.useremail  
 class Replies(models.Model):
     user = models.ForeignKey(Messages, on_delete=models.CASCADE)
     message = models.TextField(max_length = 1000)
