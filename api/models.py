@@ -77,3 +77,9 @@ class CarImages(models.Model):
     interior = models.ImageField(upload_to='cars/')
     exterior = models.ImageField(upload_to = 'cars/')
     date_added = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'CarImages'
+
+    def __str__(self):
+        return self.interior
