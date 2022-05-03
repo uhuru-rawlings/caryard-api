@@ -25,9 +25,15 @@ class Lastlogin(models.Model):
     def __str__(self):
         return self.user.username
 
-
 class Profiles(models.Model):
     user = models.ForeignKey(Registration, on_delete=models.CASCADE)
     image = models.ImageField(upload_to = 'images/')
     contact = models.CharField(max_length=13)
     date_added = models.DateTimeField(auto_now=True)
+
+
+    class Meta:
+        db_table = 'Profiles'
+
+    def __str__(self):
+        return self.contact
