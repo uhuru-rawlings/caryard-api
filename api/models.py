@@ -51,3 +51,22 @@ class CarModels(models.Model):
     modelname = models.CharField(max_length=100)
     company = models.ForeignKey(Companies, on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'CarModels'
+
+    def __str__(self):
+        return self.modelname
+
+class Cars(models.Model):
+    user = models.ForeignKey(Registration, on_delete=models.CASCADE)
+    carmodel = models.CharField(max_length=100)
+    years_of_service = models.IntegerField()
+    Fuelconsumption = models.CharField(max_length=300)
+    description = models.TextField(max_length=6000)
+
+    class Meta:
+        db_table = 'Cars'
+
+    def __str__(self):
+        return self.carmodel
