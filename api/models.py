@@ -64,9 +64,16 @@ class Cars(models.Model):
     years_of_service = models.IntegerField()
     Fuelconsumption = models.CharField(max_length=300)
     description = models.TextField(max_length=6000)
-
+    date_added = models.DateTimeField(auto_now=True)
     class Meta:
         db_table = 'Cars'
 
     def __str__(self):
         return self.carmodel
+
+
+class CarImages(models.Model):
+    cardetails = models.ForeignKey(Cars, on_delete=models.CASCADE)
+    interior = models.ImageField(upload_to='cars/')
+    exterior = models.ImageField(upload_to = 'cars/')
+    date_added = models.DateTimeField(auto_now=True)
