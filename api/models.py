@@ -16,7 +16,7 @@ class Registration(models.Model):
         return self.useremail
 
 class Lastlogin(models.Model):
-    user = models.ForeignKey(Registration, CASCADE=models.CASCADE)
+    user = models.ForeignKey(Registration, on_delete=models.CASCADE)
     last_login = models.DateTimeField()
 
     class Meta:
