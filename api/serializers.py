@@ -8,7 +8,7 @@ from api.models import Registration,Profiles,CarModels,Messages,CarImages,Cars,C
 class registrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Registration
-        fields = ['useremail','username']
+        fields = ['id','useremail','username']
 
 class profilesSerializer(serializers.ModelSerializer):
     class Meta:
