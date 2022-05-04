@@ -1,3 +1,4 @@
+from ast import Return
 from cProfile import Profile
 from django.shortcuts import render
 from api.serializers import registrationSerializer,carmodelsSerializer,messageSerializers,profilesSerializer,carimagesSerializer,carsSerializers,companiesSerializer,repliesSerializers
@@ -79,7 +80,7 @@ def decode_user(request):
         return Response(serialize.data)
 
 @api_view(['POST'])
-def addprofile(request):
+def add_profile(request):
     details = request.data
     user = details['user']
     image = details['image']
@@ -90,11 +91,24 @@ def addprofile(request):
     if getuser:
         checkprofile =  Profile.objects.get(contact = contact)
         if checkprofile:
-            return Response({'warning':'profile already exist'})
+            return Response({'warning':'profile already exist.'})
         else:
             new_profile = Profile(user = getuser,image = image, contact = contact)
             new_profile.save()
             return Response({'success':'profile added successfully.'})
     else:
-        return Response({'error':'user unauthenticated'})
+        return Response({'error':'user unauthenticated.'})
 
+@api_view(['GET'])
+def get_profile(request, id):
+    getuser = Registration.objects.get(id = id)
+
+    if getuser:
+        user_profile = Profile.objects.get(user = getuser)
+        if not user_profile:
+            return Response({'warning':'no profile matches this user.'})
+        else:
+            serialize = profilesSerializer(user_profile)
+            return Response(serialize.data)
+    else:
+        return Return({'error':'user unauthenticated'})
