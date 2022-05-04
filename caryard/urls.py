@@ -15,10 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from api.views import register,resetpassword
+from api.views import register,resetpassword,user_login,decode_user,add_profile,get_profile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/register/', register, name="registration"),
     path('api/reset/', resetpassword, name="reset_password"),
+    path('api/login/', user_login, name="login"),
+    path('api/getuser/', decode_user, name="getuser"),
+    path('api/profiles/', add_profile, name="profiles"),
+    path('api/profiles/userprofile/<int:id>/', get_profile, name="user_profile"),
 ]
