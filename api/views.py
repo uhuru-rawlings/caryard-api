@@ -6,7 +6,7 @@ from django.contrib.auth.hashers import make_password,check_password
 from rest_framework.decorators import api_view
 # Create your views here.
 
-@api_view(['GET'])
+@api_view(['POST'])
 def register(request):
     details = request.data
     username = details['username']
@@ -25,3 +25,18 @@ def register(request):
         }
         serialize = registrationSerializer(data, many=True)
         return Response(serialize)
+
+@api_view(['POST'])
+def resetpassword(request):
+    details = request.data
+    useremail = details['useremail']
+    password = details['password']
+
+    check_user = Registration.objects.filter(useremail = useremail)
+    if check_user.exists():
+        users = Registration.objects.get(useremail = useremail)
+        users.password = make_password(password)
+        users.save()
+        return Response("password reset succesfull")
+    else:
+        return Response("user dont exist.")
