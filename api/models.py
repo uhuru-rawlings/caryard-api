@@ -97,7 +97,7 @@ class Replies(models.Model):
     date_sent = models.DateTimeField(auto_now=True)
 
     class Meta:
-        db_table = 'Messages'
+        db_table = 'Replies'
 
     def __str__(self):
         return self.user.useremail
