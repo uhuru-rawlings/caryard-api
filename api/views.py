@@ -160,3 +160,13 @@ def post_cars(request):
         return Response({'success':'posted succefully.'})
     else:
         return Response({'error':'user unauthenticated'})
+
+@api_view(['GET'])
+def get_cars(request):
+    cars = Cars.objects.all()
+
+    if not cars:
+        return Response([])
+    else:
+        serialize = carsSerializers(cars, many = True)
+        return Response(serialize.data)

@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from api.views import register,resetpassword,user_login,decode_user,add_profile,get_profile,car_models
+from api.views import register,resetpassword,user_login,decode_user,add_profile,get_profile,car_models,check_availability,post_cars,get_cars
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +26,7 @@ urlpatterns = [
     path('api/profiles/', add_profile, name="profiles"),
     path('api/profiles/userprofile/<int:id>/', get_profile, name="user_profile"),
     path('api/carmodels/', car_models, name="carmodels"),
+    path('api/availability/', check_availability, name="availability"),
+    path('api/post/cars/', post_cars, name="cars"),
+    path('api/getall/cars/', get_cars, name="all_cars"),
 ]
