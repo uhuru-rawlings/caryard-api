@@ -170,3 +170,29 @@ def get_cars(request):
     else:
         serialize = carsSerializers(cars, many = True)
         return Response(serialize.data)
+
+@api_view(['POST'])
+def reply_messages(request):
+    details = request.data
+    user = details['userid']
+    messageid = details['messageid']
+    message = details['userid']
+
+    user = Registration.objects.all()
+    messageid = Messages.objects.get(id = messageid)
+    if not user:
+        return Response({'error':'user unauthenticated.'})
+    else:
+        new_reply = Replies(user = user, messageid = messageid ,message = message)
+        new_reply.save()
+        return Response({'success':'message reply sent successfully.'})
+
+@api_view(['GET'])
+def getreplies(request):
+    replies = Replies.objects.all()
+
+    if not replies:
+        return Response([])
+    else:
+        serialize = repliesSerializers(replies, many = True)
+        return Response(serialize.data)
