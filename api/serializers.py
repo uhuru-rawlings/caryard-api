@@ -21,7 +21,7 @@ class carmodelsSerializer(serializers.ModelSerializer):
 class messageSerializers(serializers.ModelSerializer):
     class Meta:
         model = Messages
-        fields = ['user','message','date_sent']
+        fields = ['user','cars','message','date_sent']
 class carimagesSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarImages

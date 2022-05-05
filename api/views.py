@@ -89,11 +89,11 @@ def add_profile(request):
     getuser = Registration.objects.get(id = user)
 
     if getuser:
-        checkprofile =  Profile.objects.get(contact = contact)
+        checkprofile =  Profiles.objects.get(contact = contact)
         if checkprofile:
             return Response({'warning':'profile already exist.'})
         else:
-            new_profile = Profile(user = getuser,image = image, contact = contact)
+            new_profile = Profiles(user = getuser,image = image, contact = contact)
             new_profile.save()
             return Response({'success':'profile added successfully.'})
     else:
@@ -104,7 +104,7 @@ def get_profile(request, id):
     getuser = Registration.objects.get(id = id)
 
     if getuser:
-        user_profile = Profile.objects.get(user = getuser)
+        user_profile = Profiles.objects.get(user = getuser)
         if not user_profile:
             return Response({'warning':'no profile matches this user.'})
         else:
@@ -112,3 +112,27 @@ def get_profile(request, id):
             return Response(serialize.data)
     else:
         return Return({'error':'user unauthenticated'})
+
+@api_view(['GET'])
+def car_models(request):
+    cars = CarModels.objects.all()
+    if cars:
+        serialize = carmodelsSerializer(cars, many= True)
+        return Response(serialize.data)
+    else:
+        return Response([])
+
+@api_view(['POST'])
+def check_availability(request):
+    details = request.data
+    user = details['id']
+    cars = details['carid']
+    message = details['messages']
+
+    user = Registration.objects.get(id = id)
+    cars = Cars.objects.get(id = id)
+    if not user:
+        return Response({'error':'user unauthenticated'})
+    else:
+        new_message = Messages(user = user, cars = cars, message = message)
+        new_message.save()
