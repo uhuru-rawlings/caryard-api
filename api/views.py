@@ -136,3 +136,27 @@ def check_availability(request):
     else:
         new_message = Messages(user = user, cars = cars, message = message)
         new_message.save()
+
+@api_view(['POST'])
+def post_cars(request):
+    details = request.data
+    user = details['user']
+    carmodel = details['carmodel']
+    years_of_service = details['years_of_service']
+    Fuelconsumption = details['Fuelconsumption']
+    description = details['description']
+    cardetails = details['cardetails']
+    interior = details['interior']
+    exterior = details['exterior']
+    
+    user = Registration.objects.get(id = id)
+    if user:
+        new_car = Cars(user = user, carmodel = carmodel, years_of_service = years_of_service, Fuelconsumption = Fuelconsumption, description =description)
+        new_car.save()
+
+        cardetails = Cars.objects.get(user = user).order_by('-id')[:1]
+        carimages = CarImages(cardetails = cardetails,interior = interior, exterior = exterior)
+        carimages.save()
+        return Response({'success':'posted succefully.'})
+    else:
+        return Response({'error':'user unauthenticated'})
