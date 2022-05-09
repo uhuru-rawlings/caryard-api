@@ -59,9 +59,10 @@ def user_login(request):
             }
             payload = {
                 'id': users.id,
-                'exp': datetime.datetime.utcnow() + datetime.datetime(minutes=60),
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
                 'iat': datetime.datetime.utcnow()
             }
+            # token = jwt.encode(payload, 'secret' ,algorithm='HS256')
             token = jwt.encode(payload, 'secret' ,algorithm='HS256').decode('utf-8')
             return Response({'jwt':token})
         return Response("wrong details provided, check and try again.")
