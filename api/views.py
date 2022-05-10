@@ -1,5 +1,6 @@
 from ast import Return
 from cProfile import Profile
+from multiprocessing import AuthenticationError
 from django.shortcuts import render
 from api.serializers import registrationSerializer,carmodelsSerializer,messageSerializers,profilesSerializer,carimagesSerializer,carsSerializers,companiesSerializer,repliesSerializers
 from api.models import Registration,Profiles,CarModels,Messages,CarImages,Cars,Companies,Replies,Lastlogin
@@ -77,7 +78,11 @@ def decode_user(request):
     if not token:
         return Response("user unauthenticated")
     else:
-        payload = jwt.decode(token, 'secret', algorithm=['HS256'])
+        try:
+           payload = jwt.decode(token, 'secret', algorithm=['HS256'])
+        except jwt.ExpiredSignatureError:
+            # raise AuthenticationError("user unauthenticated")
+            return Response("user unauthenticated")
         user =  Registration.objects.get(id = payload['id'])
         serialize = registrationSerializer(user)
         return Response(serialize.data)
@@ -119,11 +124,33 @@ def get_profile(request, id):
 @api_view(['GET'])
 def car_models(request):
     cars = CarModels.objects.all()
+    modelsc = ["Abarth","Acura","Alfa Romeo","BMW","Aston Martin","Audi","Bently","Buick",
+                "Cadillac","Chevrolet","Chrysler","Citroen","Dacia","Doege","Ferrari","Fiat",
+                "Ford","GMC","Honda","Hummer","Hyundai","Infiniti","Isuzu","Jagua","Jeep",
+                "Kia","Lamboghini","Lancia","Land Rover","Lexus","Lincoln","Lotus","Maserati",
+                "Mazda","Mercedes-Benz","Mercury","Mini","Mistubishi","Nisan","Opel","Peugeot",
+                "Pontiac","Porsche","Ram","Renault","Saab","Saturn","Scion","Seat","Skoda","Smart",
+                "SsangYong","Subaru","Suzuki","Tesla","Toyota","Volkswagen","Volvo","Wiesmann"]
+    companies = Companies.objects.all()
+    if companies:
+        pass
+    else:
+        for y in modelsc:
+            new_company = Companies(companyname = y)
+            new_company.save()
+    companies = Companies.objects.all()
     if cars:
         serialize = carmodelsSerializer(cars, many= True)
         return Response(serialize.data)
     else:
-        return Response([])
+        for x in modelsc:
+            for v in companies:
+               if v.companyname == x:
+                    new_models = CarModels(modelname = x,company = v)
+                    new_models.save()
+        cars = CarModels.objects.all()
+        serialize = carmodelsSerializer(cars, many= True)
+        return Response(serialize.data)
 
 @api_view(['POST'])
 def check_availability(request):
@@ -143,7 +170,7 @@ def check_availability(request):
 @api_view(['POST'])
 def post_cars(request):
     details = request.data
-    user = details['user']
+    user = details['id']
     carmodel = details['carmodel']
     years_of_service = details['years_of_service']
     Fuelconsumption = details['Fuelconsumption']
@@ -152,13 +179,14 @@ def post_cars(request):
     interior = details['interior']
     exterior = details['exterior']
     
-    user = Registration.objects.get(id = id)
+    user = Registration.objects.get(id = user)
     if user:
         new_car = Cars(user = user, carmodel = carmodel, years_of_service = years_of_service, Fuelconsumption = Fuelconsumption, description =description)
         new_car.save()
 
-        cardetails = Cars.objects.get(user = user).order_by('-id')[:1]
-        carimages = CarImages(cardetails = cardetails,interior = interior, exterior = exterior)
+        cardetails = Cars.objects.filter(user = user)
+        last = len(cardetails)
+        carimages = CarImages(cardetails = cardetails[last - 1],interior = interior, exterior = exterior)
         carimages.save()
         return Response({'success':'posted succefully.'})
     else:

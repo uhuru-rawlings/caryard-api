@@ -80,7 +80,7 @@ class CarImages(models.Model):
         db_table = 'CarImages'
 
     def __str__(self):
-        return self.interior
+        return self.cardetails.carmodel
 class Messages(models.Model):
     user = models.ForeignKey(Registration, on_delete=models.CASCADE)
     cars = models.ForeignKey(Cars, on_delete=models.CASCADE)
