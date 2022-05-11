@@ -202,6 +202,17 @@ def get_cars(request):
         serialize = carsSerializers(cars, many = True)
         return Response(serialize.data)
 
+@api_view(['GET'])
+def get_images(request):
+    cars = CarImages.objects.all()
+
+    if not cars:
+        return Response([])
+    else:
+        serialize = carimagesSerializer(cars, many = True)
+        return Response(serialize.data)
+
+
 @api_view(['POST'])
 def reply_messages(request):
     details = request.data

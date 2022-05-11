@@ -15,11 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from api.views import register,resetpassword,user_login,decode_user,add_profile,get_profile,car_models,check_availability,post_cars,get_cars,reply_messages,getreplies
+from api.views import get_images,register,resetpassword,user_login,decode_user,add_profile,get_profile,car_models,check_availability,post_cars,get_cars,reply_messages,getreplies
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from django.urls import re_path
+from django.conf import settings
+from django.conf.urls.static import static
 # from django.conf.urls import url
 schema_view = get_schema_view(
    openapi.Info(
@@ -49,6 +51,7 @@ urlpatterns = [
     path('api/availability/', check_availability, name="availability"),
     path('api/post/cars/', post_cars, name="cars"),
     path('api/getall/cars/', get_cars, name="all_cars"),
+    path('api/getall/carimages/', get_images, name="images"),
     path('api/messages/replies/', reply_messages, name="reply_messages"),
     path('api/replies/', getreplies, name="replies"),
-]
+]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
